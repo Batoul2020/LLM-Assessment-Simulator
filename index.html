@@ -33,6 +33,14 @@
   .rules { text-align: left; margin-bottom: 1.5rem; }
   .rules li { font-size: 13px; color: #555; margin-bottom: 6px; padding-left: 4px; }
 
+  /* BEST SCORE BANNER */
+  .best-score-banner {
+    background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;
+    padding: 10px 16px; margin-bottom: 1.5rem; display: flex;
+    align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; color: #15803d; font-weight: 600;
+  }
+
   /* EXAM SCREEN */
   #exam-screen { display: none; min-height: 100vh; }
 
@@ -50,7 +58,24 @@
   }
   .timer.warning { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
   .timer.danger { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
-  .progress-info { font-size: 13px; color: #666; }
+
+  /* PROGRESS BAR */
+  .progress-bar-wrap {
+    background: white; border-bottom: 1px solid #e5e7eb;
+    padding: 0 24px 10px;
+  }
+  .progress-bar-header {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: #888; margin-bottom: 5px;
+    padding-top: 8px;
+  }
+  .progress-bar-track {
+    height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: #2563eb; border-radius: 999px;
+    transition: width 0.3s ease;
+  }
 
   .exam-body { display: flex; max-width: 1100px; margin: 0 auto; padding: 24px 16px; gap: 20px; }
 
@@ -60,9 +85,10 @@
     background: white; border-radius: 12px; padding: 2rem;
     box-shadow: 0 1px 6px rgba(0,0,0,0.06); margin-bottom: 16px;
   }
-  .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+  .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; flex-wrap: wrap; }
   .q-num { background: #2563eb; color: white; border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 600; }
   .q-type-badge { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; border-radius: 6px; padding: 3px 10px; font-size: 12px; }
+  .q-section-badge { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; border-radius: 6px; padding: 3px 10px; font-size: 12px; }
   .q-text { font-size: 16px; line-height: 1.7; color: #1a1a1a; margin-bottom: 1.5rem; font-weight: 500; }
   .options { display: flex; flex-direction: column; gap: 10px; }
   .option-label {
@@ -73,12 +99,35 @@
   .option-label:hover { border-color: #93c5fd; background: #eff6ff; }
   .option-label input { margin-top: 2px; accent-color: #2563eb; flex-shrink: 0; }
   .option-label.selected { border-color: #2563eb; background: #eff6ff; }
+
+  /* Review mode option states */
+  .option-label.correct-answer { border-color: #16a34a !important; background: #f0fdf4 !important; }
+  .option-label.wrong-answer { border-color: #dc2626 !important; background: #fef2f2 !important; }
+  .option-marker { font-size: 14px; margin-left: auto; padding-left: 8px; flex-shrink: 0; }
+
   .option-text-input {
     width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb;
     border-radius: 8px; font-size: 15px; resize: vertical; min-height: 100px;
     font-family: inherit; outline: none;
   }
   .option-text-input:focus { border-color: #2563eb; }
+
+  /* CONFIDENCE RATING */
+  .confidence-wrap {
+    margin-top: 16px; padding: 12px 16px; background: #f8fafc;
+    border-radius: 8px; border: 1px solid #e5e7eb;
+  }
+  .confidence-label { font-size: 12px; color: #888; margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .confidence-btns { display: flex; gap: 8px; }
+  .conf-btn {
+    flex: 1; padding: 7px 10px; border-radius: 6px; border: 1.5px solid #e5e7eb;
+    background: white; font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s; color: #666;
+  }
+  .conf-btn:hover { border-color: #93c5fd; }
+  .conf-btn.active-sure { background: #f0fdf4; border-color: #16a34a; color: #16a34a; }
+  .conf-btn.active-unsure { background: #fff7ed; border-color: #f59e0b; color: #b45309; }
+  .conf-btn.active-guessing { background: #fef2f2; border-color: #dc2626; color: #dc2626; }
 
   .nav-btns { display: flex; gap: 10px; }
   .btn-nav {
@@ -93,7 +142,7 @@
 
   /* SIDEBAR */
   .sidebar { width: 240px; flex-shrink: 0; }
-  .sidebar-card { background: white; border-radius: 12px; padding: 1rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); position: sticky; top: 80px; }
+  .sidebar-card { background: white; border-radius: 12px; padding: 1rem; box-shadow: 0 1px 6px rgba(0,0,0,0.06); position: sticky; top: 100px; }
   .sidebar-title { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
   .q-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
   .q-dot {
@@ -140,10 +189,51 @@
   .rstat { background: white; border-radius: 10px; padding: 1rem 1.5rem; text-align: center; min-width: 120px; }
   .rstat .rv { font-size: 24px; font-weight: 700; }
   .rstat .rl { font-size: 12px; color: #888; margin-top: 2px; }
-  .green { color: #16a34a; } .red { color: #dc2626; } .gray { color: #888; }
+  .green { color: #16a34a; } .red { color: #dc2626; } .gray { color: #888; } .amber { color: #b45309; }
+
+  /* PERSONAL BEST BADGE */
+  .new-best-badge {
+    display: inline-block; background: #fef3c7; color: #b45309;
+    border: 1.5px solid #fbbf24; border-radius: 8px; padding: 6px 16px;
+    font-size: 13px; font-weight: 700; margin: 0 auto 1rem; text-align: center;
+  }
+
+  /* SECTION BREAKDOWN */
+  .breakdown-section { max-width: 800px; margin: 0 auto 2rem; }
+  .breakdown-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 1rem; }
+  .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .breakdown-card {
+    background: white; border-radius: 10px; padding: 1rem;
+    border-left: 4px solid #2563eb;
+  }
+  .bc-name { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .bc-score { font-size: 20px; font-weight: 700; }
+  .bc-bar-track { height: 4px; background: #e5e7eb; border-radius: 999px; margin-top: 6px; }
+  .bc-bar-fill { height: 100%; border-radius: 999px; transition: width 0.5s ease; }
+
+  /* CONFIDENCE BREAKDOWN */
+  .confidence-breakdown { max-width: 800px; margin: 0 auto 2rem; }
+  .confidence-breakdown h2 { font-size: 18px; font-weight: 700; margin-bottom: 1rem; }
+  .conf-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+  .conf-stat {
+    background: white; border-radius: 10px; padding: 1rem 1.5rem; flex: 1; min-width: 150px;
+  }
+  .conf-stat .cs-label { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .conf-stat .cs-val { font-size: 18px; font-weight: 700; }
+  .conf-stat .cs-sub { font-size: 12px; color: #888; }
 
   .review-section { max-width: 800px; margin: 0 auto; }
   .review-section h2 { font-size: 18px; font-weight: 700; margin-bottom: 1rem; }
+
+  /* Review filters */
+  .review-filters { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; border: 1.5px solid #e5e7eb;
+    background: white; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s; color: #666;
+  }
+  .filter-btn.active { background: #2563eb; border-color: #2563eb; color: white; }
+
   .review-q {
     background: white; border-radius: 10px; padding: 1.5rem;
     margin-bottom: 12px; border-left: 4px solid #e5e7eb;
@@ -155,17 +245,33 @@
   .review-q .rq-text { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
   .review-q .rq-answer { font-size: 13px; }
   .your-ans { color: #dc2626; } .correct-ans { color: #16a34a; }
+
+  .result-actions { display: flex; gap: 12px; justify-content: center; margin: 2rem 0; flex-wrap: wrap; }
   .restart-btn {
-    display: block; margin: 2rem auto; padding: 14px 40px;
-    background: #2563eb; color: white; border: none; border-radius: 10px;
-    font-size: 16px; font-weight: 700; cursor: pointer;
+    padding: 14px 40px; background: #2563eb; color: white;
+    border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;
   }
+  .share-btn {
+    padding: 14px 40px; background: white; color: #2563eb;
+    border: 2px solid #2563eb; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .share-btn:hover { background: #eff6ff; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: #1a1a1a; color: white; padding: 10px 20px; border-radius: 8px;
+    font-size: 14px; font-weight: 600; z-index: 9999;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
 
   @media (max-width: 700px) {
     .exam-body { flex-direction: column; }
     .sidebar { width: 100%; }
     .sidebar-card { position: static; }
     .q-grid { grid-template-columns: repeat(12, 1fr); }
+    .result-actions { flex-direction: column; align-items: center; }
   }
 </style>
 </head>
@@ -177,6 +283,9 @@
     <div class="logo">📝</div>
     <h1>LLM Assessment Simulator</h1>
     <p>Practice test — Innodata Inc. preparation</p>
+    <div id="best-score-banner" style="display:none" class="best-score-banner">
+      🏆 Your best score: <span id="best-score-val"></span>
+    </div>
     <div class="meta-grid">
       <div class="meta-item"><div class="val">122</div><div class="lbl">Questions</div></div>
       <div class="meta-item"><div class="val">122</div><div class="lbl">Minutes</div></div>
@@ -188,7 +297,8 @@
       <li>🚩 Flag questions to revisit later</li>
       <li>✅ You can change answers before submitting</li>
       <li>⚠️ Test auto-submits when time runs out</li>
-      <li>📊 Full review with correct answers shown at the end</li>
+      <li>💡 Rate your confidence on each answer</li>
+      <li>📊 Full score breakdown shown at the end</li>
     </ul>
     <button class="btn-start" onclick="startExam()">Start Assessment</button>
   </div>
@@ -200,6 +310,15 @@
     <div class="exam-title">LLM Assessment — Innodata Inc.</div>
     <div class="timer" id="timer">2:02:00</div>
     <div class="progress-info" id="progress-info">Question 1 of 122</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-header">
+      <span id="progress-answered">0 answered</span>
+      <span id="progress-remaining">122 remaining</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div>
+    </div>
   </div>
   <div class="exam-body">
     <div class="q-panel">
@@ -230,6 +349,7 @@
 <div id="result-screen">
   <div class="result-header">
     <h1 id="result-title">Assessment Complete</h1>
+    <div id="new-best-badge" style="display:none" class="new-best-badge">🎉 New Personal Best!</div>
     <div class="score-circle">
       <div class="score-pct" id="score-pct">0%</div>
       <div class="score-sub" id="score-raw">0/122</div>
@@ -239,161 +359,253 @@
       <div class="rstat"><div class="rv red" id="r-wrong">0</div><div class="rl">Wrong</div></div>
       <div class="rstat"><div class="rv gray" id="r-skip">0</div><div class="rl">Skipped</div></div>
       <div class="rstat"><div class="rv" id="r-time">--</div><div class="rl">Time used</div></div>
+      <div class="rstat"><div class="rv amber" id="r-best">--</div><div class="rl">Personal Best</div></div>
     </div>
   </div>
+
+  <!-- SECTION BREAKDOWN -->
+  <div class="breakdown-section">
+    <h2>📊 Score by Section</h2>
+    <div class="breakdown-grid" id="breakdown-grid"></div>
+  </div>
+
+  <!-- CONFIDENCE BREAKDOWN -->
+  <div class="confidence-breakdown">
+    <h2>🎯 Confidence Analysis</h2>
+    <div class="conf-stats" id="conf-stats"></div>
+  </div>
+
+  <!-- ANSWER REVIEW -->
   <div class="review-section">
     <h2>Answer Review</h2>
+    <div class="review-filters">
+      <button class="filter-btn active" onclick="filterReview('all', this)">All (122)</button>
+      <button class="filter-btn" onclick="filterReview('wrong', this)">❌ Wrong</button>
+      <button class="filter-btn" onclick="filterReview('correct', this)">✅ Correct</button>
+      <button class="filter-btn" onclick="filterReview('skipped', this)">⬜ Skipped</button>
+    </div>
     <div id="review-list"></div>
   </div>
-  <button class="restart-btn" onclick="restartExam()">Try Again</button>
+
+  <div class="result-actions">
+    <button class="share-btn" onclick="copyResults()">📋 Copy Results</button>
+    <button class="restart-btn" onclick="restartExam()">🔁 Try Again (Shuffled)</button>
+  </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-const QUESTIONS = [
-  // ── SECTION 1: LLM Fundamentals (Q1–20) ─────────────────────────────────
-  {t:"mc", q:"What does LLM stand for in the context of artificial intelligence?", opts:["Large Language Model","Linear Learning Machine","Layered Logic Module","Long-range Language Mechanism"], a:0},
-  {t:"tf", q:"Large language models are trained exclusively on structured tabular data.", a:"False"},
-  {t:"mc", q:"Which training objective is most commonly used to pre-train modern LLMs?", opts:["Image classification","Next-token prediction","Reinforcement learning only","Clustering"], a:1},
-  {t:"mc", q:"What is a 'token' in the context of language models?", opts:["A user account credential","A unit of text (word, subword, or character) the model processes","A type of neural network layer","A memory allocation unit"], a:1},
-  {t:"tf", q:"GPT-4, Claude, and Gemini are all examples of large language models.", a:"True"},
-  {t:"mc", q:"What is 'fine-tuning' in the context of LLMs?", opts:["Adjusting a model's temperature setting","Further training a pre-trained model on a specific dataset","Reducing the number of parameters","Compressing a model for mobile use"], a:1},
-  {t:"mc", q:"Which of the following best describes 'prompt engineering'?", opts:["Building hardware for AI servers","Designing input instructions to get better outputs from LLMs","Training a model from scratch","Writing code to deploy models"], a:1},
-  {t:"tf", q:"The 'context window' of an LLM refers to the maximum amount of text it can process in a single interaction.", a:"True"},
-  {t:"mc", q:"What is 'temperature' in LLM inference?", opts:["A measure of GPU heat","A parameter controlling randomness/creativity in output","The training data size","The model's response speed"], a:1},
-  {t:"mc", q:"Which architecture underpins most modern large language models?", opts:["Recurrent Neural Network (RNN)","Convolutional Neural Network (CNN)","Transformer","Decision Tree"], a:2},
-  {t:"tf", q:"An LLM with a larger context window can 'remember' more information within a single conversation.", a:"True"},
-  {t:"mc", q:"What is 'zero-shot' prompting?", opts:["Asking the model without providing any examples in the prompt","Training the model with no data","Setting temperature to zero","Running inference offline"], a:0},
-  {t:"mc", q:"What is 'few-shot' prompting?", opts:["Prompting with very short questions","Providing a small number of examples in the prompt to guide the model","Using only 3 tokens","Fine-tuning on few examples"], a:1},
-  {t:"tf", q:"LLMs can access the internet in real time by default.", a:"False"},
-  {t:"mc", q:"What does RLHF stand for?", opts:["Reinforcement Learning from Human Feedback","Random Layer Hyperparameter Filtering","Recursive Language Handling Framework","Retrieval-Limited Human Function"], a:0},
-  {t:"mc", q:"Which of the following is NOT a known risk of LLMs?", opts:["Hallucination","Bias","Perfect factual accuracy","Privacy leakage"], a:2},
-  {t:"tf", q:"Hallucination in LLMs refers to the model generating confident but factually incorrect information.", a:"True"},
-  {t:"mc", q:"What is a 'system prompt' in LLM usage?", opts:["A hardware diagnostic message","Instructions given to the model before the user conversation begins","A user's first message","The model's training configuration"], a:1},
-  {t:"mc", q:"What does 'grounding' mean in the context of LLMs?", opts:["Connecting the model to factual or retrieved information to reduce hallucination","Deleting the model's memory","A type of regularization","Reducing model size"], a:0},
-  {t:"tf", q:"Increasing the temperature parameter makes LLM outputs more deterministic.", a:"False"},
-
-  // ── SECTION 2: Output Quality & Evaluation (Q21–45) ─────────────────────
-  {t:"mc", q:"A response is considered 'coherent' when it:", opts:["Contains no punctuation errors","Logically flows and stays on topic throughout","Is longer than 500 words","Uses technical vocabulary"], a:1},
-  {t:"mc", q:"When evaluating an LLM response for 'relevance', what are you checking?", opts:["Whether the response is grammatically correct","Whether the response addresses what was actually asked","Whether the response is creative","Whether the response is short"], a:1},
-  {t:"tf", q:"A factually correct response that doesn't answer the user's question is still considered a high-quality output.", a:"False"},
-  {t:"mc", q:"Which of these is a sign of a low-quality LLM response?", opts:["Concise and direct answer","Circular reasoning that restates the question","Well-organized paragraphs","Appropriate use of examples"], a:1},
-  {t:"mc", q:"What does 'fluency' refer to when rating an LLM response?", opts:["How fast the model generates text","The naturalness and grammatical correctness of the language","The number of facts included","Whether code is syntactically valid"], a:1},
-  {t:"tf", q:"Verbosity (being excessively long) always improves response quality.", a:"False"},
-  {t:"mc", q:"You are asked to rate two responses to the question 'How do I boil an egg?' Response A gives step-by-step instructions. Response B gives the history of eggs. Which is more relevant?", opts:["Response A","Response B","Both equally","Neither"], a:0},
-  {t:"mc", q:"What is 'instruction following' as an evaluation dimension?", opts:["Whether the model executes system-level commands","Whether the model did what the user asked it to do","Whether the model uses proper syntax","Whether the model is polite"], a:1},
-  {t:"tf", q:"A response that contains accurate information but is rude or offensive is generally rated as high quality.", a:"False"},
-  {t:"mc", q:"When a model is asked to 'summarize in 3 bullet points' but returns 10 paragraphs, this is a failure of:", opts:["Fluency","Instruction following","Creativity","Grammar"], a:1},
-  {t:"mc", q:"Which rating scale format is most commonly used in LLM evaluation tasks?", opts:["Binary (yes/no only)","Likert scale (e.g. 1–5)","Alphabetical (A–Z)","Hex codes"], a:1},
-  {t:"tf", q:"When comparing two model responses, your personal preference should be the sole basis for your rating.", a:"False"},
-  {t:"mc", q:"A response that confidently states '2+2=5' is an example of:", opts:["Hallucination","Instruction following","Good reasoning","Appropriate tone"], a:0},
-  {t:"mc", q:"What should an evaluator do when both Response A and Response B are equally good?", opts:["Always pick A","Always pick B","Select 'Tie' or rate them equally","Skip the question"], a:2},
-  {t:"tf", q:"Evaluators should apply consistent rating standards across all questions, regardless of topic.", a:"True"},
-  {t:"mc", q:"Which of the following best describes 'completeness' in output evaluation?", opts:["The response is very long","The response fully addresses all parts of the question","The response has no typos","The response uses formal language"], a:1},
-  {t:"mc", q:"A user asks 'What is the capital of Australia?' and the model answers 'Sydney.' This response is:", opts:["Correct","Incorrect — the capital is Canberra","Incomplete","Off-topic"], a:1},
-  {t:"tf", q:"When evaluating creative writing, grammar and factual accuracy are the only criteria that matter.", a:"False"},
-  {t:"mc", q:"What is 'calibration' in the context of LLM evaluation?", opts:["Adjusting hardware settings","Ensuring your ratings are consistent and not systematically biased","Reducing model size","Setting context window size"], a:1},
-  {t:"mc", q:"Which of the following is an example of a 'leading prompt' that could bias a model?", opts:["'What are the pros and cons of solar energy?'","'Don't you think solar energy is the best option?'","'Describe solar energy in simple terms.'","'List 5 facts about solar panels.'"], a:1},
-  {t:"tf", q:"An evaluator's job is to rate responses objectively based on defined quality criteria, not personal opinion.", a:"True"},
-  {t:"mc", q:"If a model response is helpful but contains one minor factual error, the best approach is to:", opts:["Rate it as completely wrong","Note the error and reflect it proportionally in your quality rating","Ignore the error entirely","Give it the highest rating anyway"], a:1},
-  {t:"mc", q:"'Groundedness' in a response means:", opts:["The response is pessimistic in tone","The response is supported by facts or context provided","The response uses formal register","The response avoids slang"], a:1},
-  {t:"tf", q:"A model that repeats the same sentence multiple times in a response demonstrates good output quality.", a:"False"},
-  {t:"mc", q:"Which is the better response to 'Explain photosynthesis to a 10-year-old'? A: Uses simple analogies and short sentences. B: Uses biochemical terminology without explanation.", opts:["A","B","Both equal","Depends on the grader"], a:0},
-
-  // ── SECTION 3: Bias, Safety & Ethics (Q46–65) ────────────────────────────
-  {t:"mc", q:"What is 'model bias' in LLMs?", opts:["The model preferring shorter responses","Systematic skewing of outputs due to biased training data or design","The model running slower on certain tasks","A hardware limitation"], a:1},
-  {t:"tf", q:"LLMs trained on internet data may inherit societal biases present in that data.", a:"True"},
-  {t:"mc", q:"Which of the following is an example of gender bias in an LLM response?", opts:["Using 'they' as a singular pronoun","Assuming all nurses are female","Providing equal examples for all genders","Declining to make gender assumptions"], a:1},
-  {t:"mc", q:"What is 'prompt injection'?", opts:["Adding more context to a prompt","A technique where malicious input tries to hijack the model's behavior","A method to increase model speed","A type of fine-tuning"], a:1},
-  {t:"tf", q:"Safety filtering in LLMs aims to prevent the model from generating harmful or dangerous content.", a:"True"},
-  {t:"mc", q:"A user asks an LLM for instructions on how to make a weapon. A well-aligned model should:", opts:["Provide the instructions if asked politely","Refuse and explain why","Ask for more context before deciding","Provide a partial answer"], a:1},
-  {t:"mc", q:"What does 'content moderation' in LLM output evaluation involve?", opts:["Checking spelling","Identifying and flagging harmful, offensive, or policy-violating content","Improving grammar","Translating responses"], a:1},
-  {t:"tf", q:"A response that is technically helpful but promotes illegal activity should be rated as high quality.", a:"False"},
-  {t:"mc", q:"Which of the following is an example of 'stereotype reinforcement' in an LLM?", opts:["Providing diverse examples","Associating certain ethnicities with criminal behavior","Using neutral language","Offering balanced perspectives"], a:1},
-  {t:"mc", q:"What is 'PII' and why is it important in LLM evaluation?", opts:["Personal Identifiable Information — it must not be exposed or generated by models","Prompt Input Interface — used to format prompts","Parallel Inference Instance — a deployment method","Public Internet Index — the training data source"], a:0},
-  {t:"tf", q:"An LLM that consistently outputs different quality for questions in different languages may exhibit language bias.", a:"True"},
-  {t:"mc", q:"'Sycophancy' in an LLM means:", opts:["The model refusing to answer","The model agreeing with the user even when the user is wrong","The model being overly verbose","The model ignoring the system prompt"], a:1},
-  {t:"mc", q:"Which evaluation task involves checking if a model treats demographic groups consistently?", opts:["Grammar checking","Bias evaluation / fairness testing","Speed benchmarking","Context window testing"], a:1},
-  {t:"tf", q:"Evaluators should flag responses that contain hate speech even if the prompt asked for it.", a:"True"},
-  {t:"mc", q:"What is a 'red-teaming' exercise in the context of AI?", opts:["A competitive coding challenge","Deliberately trying to make a model produce harmful outputs to find weaknesses","A model training technique","A bias correction method"], a:1},
-  {t:"mc", q:"Why is it important for LLM evaluators to maintain consistency across rating sessions?", opts:["To finish tasks faster","To ensure reliable, unbiased data that can train better models","To avoid reading all responses carefully","To maximize the number of tasks completed"], a:1},
-  {t:"tf", q:"A model that changes its stated opinion when the user pushes back (without new evidence) is showing sycophantic behavior.", a:"True"},
-  {t:"mc", q:"Which of the following is NOT a safety concern in LLM outputs?", opts:["Generating medical misinformation","Revealing personal data","Producing grammatically complex sentences","Providing instructions for self-harm"], a:2},
-  {t:"mc", q:"When a response contains potentially sensitive information about a real person, an evaluator should:", opts:["Ignore it and rate normally","Flag it for review as a potential privacy issue","Share it with colleagues","Rate it higher for being informative"], a:1},
-  {t:"tf", q:"LLM safety alignment techniques include both training-time and inference-time interventions.", a:"True"},
-
-  // ── SECTION 4: Annotation & Data Quality (Q66–85) ────────────────────────
-  {t:"mc", q:"What is the primary purpose of data annotation in AI development?", opts:["To compress training data","To label data so models can learn from it","To encrypt datasets","To speed up inference"], a:1},
-  {t:"tf", q:"High-quality annotations require clear guidelines and consistent application of those guidelines.", a:"True"},
-  {t:"mc", q:"Inter-annotator agreement (IAA) measures:", opts:["How fast annotators work","How consistently multiple annotators label the same data","The number of tasks completed per hour","The cost of annotation projects"], a:1},
-  {t:"mc", q:"When annotation guidelines are ambiguous, the best approach is to:", opts:["Make your best guess and move on","Skip all ambiguous items","Refer to the guidelines and use the closest applicable rule, flagging for review if needed","Always choose the most negative label"], a:2},
-  {t:"tf", q:"Rushing through annotation tasks to complete more items typically improves data quality.", a:"False"},
-  {t:"mc", q:"What is a 'golden set' in annotation quality control?", opts:["The highest-paid annotation tasks","A set of pre-labeled items used to test annotator accuracy","The first batch of annotations","Items with the highest difficulty"], a:1},
-  {t:"mc", q:"Which of the following is an example of annotation bias?", opts:["Following the guidelines carefully","Consistently labeling ambiguous items as negative because of personal frustration","Taking breaks between sessions","Using a rubric to evaluate responses"], a:1},
-  {t:"tf", q:"Annotators should document uncertainty or edge cases rather than silently making arbitrary decisions.", a:"True"},
-  {t:"mc", q:"In a preference annotation task, you are shown two AI responses and asked to pick the better one. If both are equally bad, you should:", opts:["Pick the shorter one","Pick randomly","Select 'Both are bad' or 'Tie' if the option exists","Always pick the first one"], a:2},
-  {t:"mc", q:"Which factor most affects the quality of a human evaluation dataset?", opts:["The number of annotators","The clarity of guidelines and training of evaluators","The speed of completion","The size of the payment"], a:1},
-  {t:"tf", q:"An annotator finding the topic boring is a valid reason to apply different quality standards.", a:"False"},
-  {t:"mc", q:"What does it mean for annotation labels to be 'reproducible'?", opts:["The same annotator can redo them quickly","Different annotators applying the same guidelines reach the same conclusions","Labels can be exported to multiple formats","The task can be restarted at any time"], a:1},
-  {t:"mc", q:"Why is it important to re-read the annotation guidelines before starting each new session?", opts:["It is not important","To refresh your memory and ensure consistent application of standards","To find loopholes","To avoid doing difficult tasks"], a:1},
-  {t:"tf", q:"Annotation tasks involving subjective content (like tone or style) require clearer guidelines than objective tasks.", a:"True"},
-  {t:"mc", q:"Which of the following is a valid reason to flag an item during annotation?", opts:["The topic is outside your area of interest","The item violates platform safety policies","The item takes longer than average","You disagree with the guidelines"], a:1},
-  {t:"mc", q:"Data annotation for RLHF (Reinforcement Learning from Human Feedback) typically involves:", opts:["Labeling images with bounding boxes","Ranking or rating AI-generated responses based on quality","Transcribing audio files","Translating text between languages"], a:1},
-  {t:"tf", q:"Annotators are expected to apply guidelines even when they personally disagree with the criteria.", a:"True"},
-  {t:"mc", q:"What is 'label leakage' in annotation?", opts:["Accidentally revealing correct labels to other annotators","A type of data compression","A method of improving IAA","A technique for handling ambiguous items"], a:0},
-  {t:"mc", q:"When annotating a response that is partially correct, you should:", opts:["Mark it as fully correct","Mark it as fully wrong","Reflect the partial correctness in your rating according to the rubric","Skip it"], a:2},
-  {t:"tf", q:"Quality control checks (like audits of annotator work) are a normal part of professional annotation projects.", a:"True"},
-
-  // ── SECTION 5: Arabic Language & Multilingual (Q86–100) ─────────────────
-  {t:"mc", q:"When evaluating an Arabic LLM response, which script should the output correctly use?", opts:["Latin script","Arabic script (RTL)","Both scripts mixed","Numeric only"], a:1},
-  {t:"tf", q:"Modern Standard Arabic (MSA) and Egyptian colloquial Arabic are identical in vocabulary and grammar.", a:"False"},
-  {t:"mc", q:"An LLM response in Arabic that uses a formal register (فصحى) when the user wrote casually (عامية) is:", opts:["Always correct","A potential mismatch in tone and register that may reduce quality","Ideal for all situations","A sign of hallucination"], a:1},
-  {t:"tf", q:"Bilingual evaluators are particularly valuable for assessing LLM outputs in non-English languages.", a:"True"},
-  {t:"mc", q:"Which of the following would be an error in an Arabic LLM response?", opts:["Correct use of verb-subject agreement","Mixing Arabic and English characters randomly within words","Using formal connectors","Proper diacritics"], a:1},
-  {t:"mc", q:"When an Arabic-language prompt is answered in English by the model without being asked to, this is a failure of:", opts:["Fluency","Language instruction following","Safety","Brevity"], a:1},
-  {t:"tf", q:"Cultural sensitivity is an important evaluation dimension when assessing LLM responses for Arabic-speaking audiences.", a:"True"},
-  {t:"mc", q:"A translation task asks the model to translate from English to Arabic. The model returns a transliteration (Arabic words written in Latin letters) instead. This is:", opts:["Acceptable","A clear instruction-following failure","Creative interpretation","A safety issue"], a:1},
-  {t:"mc", q:"What does 'code-switching' mean in a multilingual LLM context?", opts:["Switching between programming languages","Alternating between two or more languages in a single response","Changing the system prompt language","Using emoji instead of words"], a:1},
-  {t:"tf", q:"An LLM trained primarily on English data may perform worse on Arabic tasks due to data imbalance.", a:"True"},
-  {t:"mc", q:"When evaluating a bilingual (Arabic/English) response, the evaluator should check:", opts:["Only the English portions","Only the Arabic portions","Both language portions for accuracy, fluency, and appropriateness","Only spelling"], a:2},
-  {t:"tf", q:"Proper names (like cities or people's names) should typically be transliterated consistently in Arabic LLM responses.", a:"True"},
-  {t:"mc", q:"A user asks for advice on a culturally sensitive topic in Arabic. A high-quality response would:", opts:["Ignore the cultural context","Acknowledge cultural nuances and respond appropriately","Respond only in English","Refuse to engage"], a:1},
-  {t:"tf", q:"Dialect differences between Gulf Arabic and Egyptian Arabic are irrelevant to output quality evaluation.", a:"False"},
-  {t:"mc", q:"Which of the following is a sign of poor Arabic fluency in an LLM response?", opts:["Correct dual verb conjugation","Using masculine plural forms where feminine forms are grammatically required","Appropriate use of فصحى","Correct placement of adjectives after nouns"], a:1},
-
-  // ── SECTION 6: Advanced Reasoning & Edge Cases (Q101–122) ────────────────
-  {t:"mc", q:"A user asks: 'What is heavier, a kilogram of feathers or a kilogram of gold?' A correct LLM response would say:", opts:["Gold, because it's denser","Feathers, because there are more of them","They weigh the same — both are one kilogram","It depends on altitude"], a:2},
-  {t:"tf", q:"An LLM response that sounds confident is necessarily more accurate than one that expresses uncertainty.", a:"False"},
-  {t:"mc", q:"What is 'chain-of-thought' prompting?", opts:["Prompting the model to answer in bullet points","Encouraging the model to show its reasoning steps before giving a final answer","Using multiple prompts in sequence","Chaining multiple API calls"], a:1},
-  {t:"mc", q:"When a model says 'As an AI, I cannot have opinions' but then expresses a clear opinion, this is an example of:", opts:["Good transparency","Inconsistency in the response","Instruction following","Hallucination"], a:1},
-  {t:"tf", q:"A model that hedges excessively ('I think maybe possibly...') on simple factual questions is demonstrating good calibration.", a:"False"},
-  {t:"mc", q:"What is the difference between a 'factual error' and a 'reasoning error' in an LLM response?", opts:["There is no difference","A factual error is wrong information; a reasoning error is flawed logic even if facts are correct","A reasoning error is always more serious","Factual errors only occur in math"], a:1},
-  {t:"mc", q:"A user asks a model to 'write a poem, then summarize it.' The model writes the poem but skips the summary. This is:", opts:["Acceptable if the poem is good","An instruction-following failure","A hallucination","A safety violation"], a:1},
-  {t:"tf", q:"Models can make mathematical errors even on simple arithmetic if not prompted to show their work.", a:"True"},
-  {t:"mc", q:"Which of the following prompts is most likely to produce a well-structured, complete response?", opts:["'Tell me about climate.'","'In 3 paragraphs, explain the main causes, effects, and solutions for climate change.'","'Climate?'","'Say something about the weather.'"], a:1},
-  {t:"mc", q:"What should an evaluator do if a model response contains a URL that may be fabricated?", opts:["Click the link to verify","Rate the response lower and flag the hallucinated link","Ignore it and rate on other criteria","Rate it higher for being helpful"], a:1},
-  {t:"tf", q:"An LLM response that is correct for the question asked but uses an inappropriate tone for the context should be noted in evaluation.", a:"True"},
-  {t:"mc", q:"A model is asked 'Who won the 2022 FIFA World Cup?' and answers 'Brazil.' This is:", opts:["Correct","Incorrect — Argentina won","Incomplete","Off-topic"], a:1},
-  {t:"mc", q:"What is 'output formatting' as an evaluation criterion?", opts:["Whether the model uses proper fonts","Whether the response format (lists, paragraphs, code blocks, etc.) matches what was requested","Whether the response is long enough","Whether the model avoids passive voice"], a:1},
-  {t:"tf", q:"When a prompt has multiple sub-questions, a high-quality response should address all of them.", a:"True"},
-  {t:"mc", q:"A model is asked to write code in Python but returns JavaScript. This is a failure of:", opts:["Safety","Hallucination","Instruction following","Fluency"], a:2},
-  {t:"mc", q:"Which of the following best describes 'model uncertainty'?", opts:["The model is broken","The model appropriately signals when it is not confident in its answer","The model is offline","The model has too many parameters"], a:1},
-  {t:"tf", q:"Evaluators should penalize a model for appropriately saying 'I don't know' when it genuinely doesn't have enough information.", a:"False"},
-  {t:"mc", q:"A prompt asks for a 'professional email tone.' The model responds with slang and emojis. This is a failure of:", opts:["Factual accuracy","Tone/register instruction following","Completeness","Safety"], a:1},
-  {t:"mc", q:"What is the best way to handle a question where you, as an evaluator, are not sure about the correct answer?", opts:["Guess based on the model's confidence","Consult the guidelines, use available resources, and flag if still uncertain","Always mark it as incorrect","Skip all uncertain items"], a:1},
-  {t:"tf", q:"Consistency in evaluation means applying the same criteria to all responses, regardless of topic, length, or language.", a:"True"},
-  {t:"mc", q:"Which of the following is the MOST important quality for an LLM data annotator?", opts:["Typing speed","Attention to detail and consistent application of guidelines","Familiarity with programming","Having a degree in computer science"], a:1},
-  {t:"mc", q:"As a final question: If you had to choose ONE word to describe what makes a great LLM response, which would it be?", opts:["Long","Helpful","Formal","Complex"], a:1}
+const SECTIONS = [
+  { name: "LLM Fundamentals", start: 0, end: 19 },
+  { name: "Output Quality", start: 20, end: 44 },
+  { name: "Bias, Safety & Ethics", start: 45, end: 64 },
+  { name: "Annotation & Data Quality", start: 65, end: 84 },
+  { name: "Arabic & Multilingual", start: 85, end: 99 },
+  { name: "Advanced Reasoning", start: 100, end: 121 },
 ];
 
+const QUESTIONS_MASTER = [
+  // ── SECTION 1: LLM Fundamentals (Q1–20) ─────────────────────────────────
+  {t:"mc", q:"What does LLM stand for in the context of artificial intelligence?", opts:["Large Language Model","Linear Learning Machine","Layered Logic Module","Long-range Language Mechanism"], a:0, s:0},
+  {t:"tf", q:"Large language models are trained exclusively on structured tabular data.", a:"False", s:0},
+  {t:"mc", q:"Which training objective is most commonly used to pre-train modern LLMs?", opts:["Image classification","Next-token prediction","Reinforcement learning only","Clustering"], a:1, s:0},
+  {t:"mc", q:"What is a 'token' in the context of language models?", opts:["A user account credential","A unit of text (word, subword, or character) the model processes","A type of neural network layer","A memory allocation unit"], a:1, s:0},
+  {t:"tf", q:"GPT-4, Claude, and Gemini are all examples of large language models.", a:"True", s:0},
+  {t:"mc", q:"What is 'fine-tuning' in the context of LLMs?", opts:["Adjusting a model's temperature setting","Further training a pre-trained model on a specific dataset","Reducing the number of parameters","Compressing a model for mobile use"], a:1, s:0},
+  {t:"mc", q:"Which of the following best describes 'prompt engineering'?", opts:["Building hardware for AI servers","Designing input instructions to get better outputs from LLMs","Training a model from scratch","Writing code to deploy models"], a:1, s:0},
+  {t:"tf", q:"The 'context window' of an LLM refers to the maximum amount of text it can process in a single interaction.", a:"True", s:0},
+  {t:"mc", q:"What is 'temperature' in LLM inference?", opts:["A measure of GPU heat","A parameter controlling randomness/creativity in output","The training data size","The model's response speed"], a:1, s:0},
+  {t:"mc", q:"Which architecture underpins most modern large language models?", opts:["Recurrent Neural Network (RNN)","Convolutional Neural Network (CNN)","Transformer","Decision Tree"], a:2, s:0},
+  {t:"tf", q:"An LLM with a larger context window can 'remember' more information within a single conversation.", a:"True", s:0},
+  {t:"mc", q:"What is 'zero-shot' prompting?", opts:["Asking the model without providing any examples in the prompt","Training the model with no data","Setting temperature to zero","Running inference offline"], a:0, s:0},
+  {t:"mc", q:"What is 'few-shot' prompting?", opts:["Prompting with very short questions","Providing a small number of examples in the prompt to guide the model","Using only 3 tokens","Fine-tuning on few examples"], a:1, s:0},
+  {t:"tf", q:"LLMs can access the internet in real time by default.", a:"False", s:0},
+  {t:"mc", q:"What does RLHF stand for?", opts:["Reinforcement Learning from Human Feedback","Random Layer Hyperparameter Filtering","Recursive Language Handling Framework","Retrieval-Limited Human Function"], a:0, s:0},
+  {t:"mc", q:"Which of the following is NOT a known risk of LLMs?", opts:["Hallucination","Bias","Perfect factual accuracy","Privacy leakage"], a:2, s:0},
+  {t:"tf", q:"Hallucination in LLMs refers to the model generating confident but factually incorrect information.", a:"True", s:0},
+  {t:"mc", q:"What is a 'system prompt' in LLM usage?", opts:["A hardware diagnostic message","Instructions given to the model before the user conversation begins","A user's first message","The model's training configuration"], a:1, s:0},
+  {t:"mc", q:"What does 'grounding' mean in the context of LLMs?", opts:["Connecting the model to factual or retrieved information to reduce hallucination","Deleting the model's memory","A type of regularization","Reducing model size"], a:0, s:0},
+  {t:"tf", q:"Increasing the temperature parameter makes LLM outputs more deterministic.", a:"False", s:0},
+
+  // ── SECTION 2: Output Quality & Evaluation (Q21–45) ─────────────────────
+  {t:"mc", q:"A response is considered 'coherent' when it:", opts:["Contains no punctuation errors","Logically flows and stays on topic throughout","Is longer than 500 words","Uses technical vocabulary"], a:1, s:1},
+  {t:"mc", q:"When evaluating an LLM response for 'relevance', what are you checking?", opts:["Whether the response is grammatically correct","Whether the response addresses what was actually asked","Whether the response is creative","Whether the response is short"], a:1, s:1},
+  {t:"tf", q:"A factually correct response that doesn't answer the user's question is still considered a high-quality output.", a:"False", s:1},
+  {t:"mc", q:"Which of these is a sign of a low-quality LLM response?", opts:["Concise and direct answer","Circular reasoning that restates the question","Well-organized paragraphs","Appropriate use of examples"], a:1, s:1},
+  {t:"mc", q:"What does 'fluency' refer to when rating an LLM response?", opts:["How fast the model generates text","The naturalness and grammatical correctness of the language","The number of facts included","Whether code is syntactically valid"], a:1, s:1},
+  {t:"tf", q:"Verbosity (being excessively long) always improves response quality.", a:"False", s:1},
+  {t:"mc", q:"You are asked to rate two responses to 'How do I boil an egg?' Response A gives step-by-step instructions. Response B gives the history of eggs. Which is more relevant?", opts:["Response A","Response B","Both equally","Neither"], a:0, s:1},
+  {t:"mc", q:"What is 'instruction following' as an evaluation dimension?", opts:["Whether the model executes system-level commands","Whether the model did what the user asked it to do","Whether the model uses proper syntax","Whether the model is polite"], a:1, s:1},
+  {t:"tf", q:"A response that contains accurate information but is rude or offensive is generally rated as high quality.", a:"False", s:1},
+  {t:"mc", q:"When a model is asked to 'summarize in 3 bullet points' but returns 10 paragraphs, this is a failure of:", opts:["Fluency","Instruction following","Creativity","Grammar"], a:1, s:1},
+  {t:"mc", q:"Which rating scale format is most commonly used in LLM evaluation tasks?", opts:["Binary (yes/no only)","Likert scale (e.g. 1–5)","Alphabetical (A–Z)","Hex codes"], a:1, s:1},
+  {t:"tf", q:"When comparing two model responses, your personal preference should be the sole basis for your rating.", a:"False", s:1},
+  {t:"mc", q:"A response that confidently states '2+2=5' is an example of:", opts:["Hallucination","Instruction following","Good reasoning","Appropriate tone"], a:0, s:1},
+  {t:"mc", q:"What should an evaluator do when both Response A and Response B are equally good?", opts:["Always pick A","Always pick B","Select 'Tie' or rate them equally","Skip the question"], a:2, s:1},
+  {t:"tf", q:"Evaluators should apply consistent rating standards across all questions, regardless of topic.", a:"True", s:1},
+  {t:"mc", q:"Which of the following best describes 'completeness' in output evaluation?", opts:["The response is very long","The response fully addresses all parts of the question","The response has no typos","The response uses formal language"], a:1, s:1},
+  {t:"mc", q:"A user asks 'What is the capital of Australia?' and the model answers 'Sydney.' This response is:", opts:["Correct","Incorrect — the capital is Canberra","Incomplete","Off-topic"], a:1, s:1},
+  {t:"tf", q:"When evaluating creative writing, grammar and factual accuracy are the only criteria that matter.", a:"False", s:1},
+  {t:"mc", q:"What is 'calibration' in the context of LLM evaluation?", opts:["Adjusting hardware settings","Ensuring your ratings are consistent and not systematically biased","Reducing model size","Setting context window size"], a:1, s:1},
+  {t:"mc", q:"Which of the following is an example of a 'leading prompt' that could bias a model?", opts:["'What are the pros and cons of solar energy?'","'Don't you think solar energy is the best option?'","'Describe solar energy in simple terms.'","'List 5 facts about solar panels.'"], a:1, s:1},
+  {t:"tf", q:"An evaluator's job is to rate responses objectively based on defined quality criteria, not personal opinion.", a:"True", s:1},
+  {t:"mc", q:"If a model response is helpful but contains one minor factual error, the best approach is to:", opts:["Rate it as completely wrong","Note the error and reflect it proportionally in your quality rating","Ignore the error entirely","Give it the highest rating anyway"], a:1, s:1},
+  {t:"mc", q:"'Groundedness' in a response means:", opts:["The response is pessimistic in tone","The response is supported by facts or context provided","The response uses formal register","The response avoids slang"], a:1, s:1},
+  {t:"tf", q:"A model that repeats the same sentence multiple times in a response demonstrates good output quality.", a:"False", s:1},
+  {t:"mc", q:"Which is better to explain photosynthesis to a 10-year-old? A: Uses simple analogies. B: Uses biochemical terminology without explanation.", opts:["A","B","Both equal","Depends on the grader"], a:0, s:1},
+
+  // ── SECTION 3: Bias, Safety & Ethics (Q46–65) ────────────────────────────
+  {t:"mc", q:"What is 'model bias' in LLMs?", opts:["The model preferring shorter responses","Systematic skewing of outputs due to biased training data or design","The model running slower on certain tasks","A hardware limitation"], a:1, s:2},
+  {t:"tf", q:"LLMs trained on internet data may inherit societal biases present in that data.", a:"True", s:2},
+  {t:"mc", q:"Which of the following is an example of gender bias in an LLM response?", opts:["Using 'they' as a singular pronoun","Assuming all nurses are female","Providing equal examples for all genders","Declining to make gender assumptions"], a:1, s:2},
+  {t:"mc", q:"What is 'prompt injection'?", opts:["Adding more context to a prompt","A technique where malicious input tries to hijack the model's behavior","A method to increase model speed","A type of fine-tuning"], a:1, s:2},
+  {t:"tf", q:"Safety filtering in LLMs aims to prevent the model from generating harmful or dangerous content.", a:"True", s:2},
+  {t:"mc", q:"A user asks an LLM for instructions on how to make a weapon. A well-aligned model should:", opts:["Provide the instructions if asked politely","Refuse and explain why","Ask for more context before deciding","Provide a partial answer"], a:1, s:2},
+  {t:"mc", q:"What does 'content moderation' in LLM output evaluation involve?", opts:["Checking spelling","Identifying and flagging harmful, offensive, or policy-violating content","Improving grammar","Translating responses"], a:1, s:2},
+  {t:"tf", q:"A response that is technically helpful but promotes illegal activity should be rated as high quality.", a:"False", s:2},
+  {t:"mc", q:"Which of the following is an example of 'stereotype reinforcement' in an LLM?", opts:["Providing diverse examples","Associating certain ethnicities with criminal behavior","Using neutral language","Offering balanced perspectives"], a:1, s:2},
+  {t:"mc", q:"What is 'PII' and why is it important in LLM evaluation?", opts:["Personal Identifiable Information — it must not be exposed or generated by models","Prompt Input Interface — used to format prompts","Parallel Inference Instance — a deployment method","Public Internet Index — the training data source"], a:0, s:2},
+  {t:"tf", q:"An LLM that consistently outputs different quality for questions in different languages may exhibit language bias.", a:"True", s:2},
+  {t:"mc", q:"'Sycophancy' in an LLM means:", opts:["The model refusing to answer","The model agreeing with the user even when the user is wrong","The model being overly verbose","The model ignoring the system prompt"], a:1, s:2},
+  {t:"mc", q:"Which evaluation task involves checking if a model treats demographic groups consistently?", opts:["Grammar checking","Bias evaluation / fairness testing","Speed benchmarking","Context window testing"], a:1, s:2},
+  {t:"tf", q:"Evaluators should flag responses that contain hate speech even if the prompt asked for it.", a:"True", s:2},
+  {t:"mc", q:"What is a 'red-teaming' exercise in the context of AI?", opts:["A competitive coding challenge","Deliberately trying to make a model produce harmful outputs to find weaknesses","A model training technique","A bias correction method"], a:1, s:2},
+  {t:"mc", q:"Why is it important for LLM evaluators to maintain consistency across rating sessions?", opts:["To finish tasks faster","To ensure reliable, unbiased data that can train better models","To avoid reading all responses carefully","To maximize the number of tasks completed"], a:1, s:2},
+  {t:"tf", q:"A model that changes its stated opinion when the user pushes back (without new evidence) is showing sycophantic behavior.", a:"True", s:2},
+  {t:"mc", q:"Which of the following is NOT a safety concern in LLM outputs?", opts:["Generating medical misinformation","Revealing personal data","Producing grammatically complex sentences","Providing instructions for self-harm"], a:2, s:2},
+  {t:"mc", q:"When a response contains potentially sensitive information about a real person, an evaluator should:", opts:["Ignore it and rate normally","Flag it for review as a potential privacy issue","Share it with colleagues","Rate it higher for being informative"], a:1, s:2},
+  {t:"tf", q:"LLM safety alignment techniques include both training-time and inference-time interventions.", a:"True", s:2},
+
+  // ── SECTION 4: Annotation & Data Quality (Q66–85) ────────────────────────
+  {t:"mc", q:"What is the primary purpose of data annotation in AI development?", opts:["To compress training data","To label data so models can learn from it","To encrypt datasets","To speed up inference"], a:1, s:3},
+  {t:"tf", q:"High-quality annotations require clear guidelines and consistent application of those guidelines.", a:"True", s:3},
+  {t:"mc", q:"Inter-annotator agreement (IAA) measures:", opts:["How fast annotators work","How consistently multiple annotators label the same data","The number of tasks completed per hour","The cost of annotation projects"], a:1, s:3},
+  {t:"mc", q:"When annotation guidelines are ambiguous, the best approach is to:", opts:["Make your best guess and move on","Skip all ambiguous items","Refer to the guidelines and use the closest applicable rule, flagging for review if needed","Always choose the most negative label"], a:2, s:3},
+  {t:"tf", q:"Rushing through annotation tasks to complete more items typically improves data quality.", a:"False", s:3},
+  {t:"mc", q:"What is a 'golden set' in annotation quality control?", opts:["The highest-paid annotation tasks","A set of pre-labeled items used to test annotator accuracy","The first batch of annotations","Items with the highest difficulty"], a:1, s:3},
+  {t:"mc", q:"Which of the following is an example of annotation bias?", opts:["Following the guidelines carefully","Consistently labeling ambiguous items as negative because of personal frustration","Taking breaks between sessions","Using a rubric to evaluate responses"], a:1, s:3},
+  {t:"tf", q:"Annotators should document uncertainty or edge cases rather than silently making arbitrary decisions.", a:"True", s:3},
+  {t:"mc", q:"In a preference annotation task with two equally bad responses, you should:", opts:["Pick the shorter one","Pick randomly","Select 'Both are bad' or 'Tie' if the option exists","Always pick the first one"], a:2, s:3},
+  {t:"mc", q:"Which factor most affects the quality of a human evaluation dataset?", opts:["The number of annotators","The clarity of guidelines and training of evaluators","The speed of completion","The size of the payment"], a:1, s:3},
+  {t:"tf", q:"An annotator finding the topic boring is a valid reason to apply different quality standards.", a:"False", s:3},
+  {t:"mc", q:"What does it mean for annotation labels to be 'reproducible'?", opts:["The same annotator can redo them quickly","Different annotators applying the same guidelines reach the same conclusions","Labels can be exported to multiple formats","The task can be restarted at any time"], a:1, s:3},
+  {t:"mc", q:"Why is it important to re-read the annotation guidelines before starting each new session?", opts:["It is not important","To refresh your memory and ensure consistent application of standards","To find loopholes","To avoid doing difficult tasks"], a:1, s:3},
+  {t:"tf", q:"Annotation tasks involving subjective content (like tone or style) require clearer guidelines than objective tasks.", a:"True", s:3},
+  {t:"mc", q:"Which of the following is a valid reason to flag an item during annotation?", opts:["The topic is outside your area of interest","The item violates platform safety policies","The item takes longer than average","You disagree with the guidelines"], a:1, s:3},
+  {t:"mc", q:"Data annotation for RLHF typically involves:", opts:["Labeling images with bounding boxes","Ranking or rating AI-generated responses based on quality","Transcribing audio files","Translating text between languages"], a:1, s:3},
+  {t:"tf", q:"Annotators are expected to apply guidelines even when they personally disagree with the criteria.", a:"True", s:3},
+  {t:"mc", q:"What is 'label leakage' in annotation?", opts:["Accidentally revealing correct labels to other annotators","A type of data compression","A method of improving IAA","A technique for handling ambiguous items"], a:0, s:3},
+  {t:"mc", q:"When annotating a response that is partially correct, you should:", opts:["Mark it as fully correct","Mark it as fully wrong","Reflect the partial correctness in your rating according to the rubric","Skip it"], a:2, s:3},
+  {t:"tf", q:"Quality control checks (like audits of annotator work) are a normal part of professional annotation projects.", a:"True", s:3},
+
+  // ── SECTION 5: Arabic Language & Multilingual (Q86–100) ─────────────────
+  {t:"mc", q:"When evaluating an Arabic LLM response, which script should the output correctly use?", opts:["Latin script","Arabic script (RTL)","Both scripts mixed","Numeric only"], a:1, s:4},
+  {t:"tf", q:"Modern Standard Arabic (MSA) and Egyptian colloquial Arabic are identical in vocabulary and grammar.", a:"False", s:4},
+  {t:"mc", q:"An LLM response in Arabic that uses a formal register (فصحى) when the user wrote casually (عامية) is:", opts:["Always correct","A potential mismatch in tone and register that may reduce quality","Ideal for all situations","A sign of hallucination"], a:1, s:4},
+  {t:"tf", q:"Bilingual evaluators are particularly valuable for assessing LLM outputs in non-English languages.", a:"True", s:4},
+  {t:"mc", q:"Which of the following would be an error in an Arabic LLM response?", opts:["Correct use of verb-subject agreement","Mixing Arabic and English characters randomly within words","Using formal connectors","Proper diacritics"], a:1, s:4},
+  {t:"mc", q:"When an Arabic-language prompt is answered in English by the model without being asked to, this is a failure of:", opts:["Fluency","Language instruction following","Safety","Brevity"], a:1, s:4},
+  {t:"tf", q:"Cultural sensitivity is an important evaluation dimension when assessing LLM responses for Arabic-speaking audiences.", a:"True", s:4},
+  {t:"mc", q:"A translation task asks the model to translate from English to Arabic. The model returns a transliteration instead. This is:", opts:["Acceptable","A clear instruction-following failure","Creative interpretation","A safety issue"], a:1, s:4},
+  {t:"mc", q:"What does 'code-switching' mean in a multilingual LLM context?", opts:["Switching between programming languages","Alternating between two or more languages in a single response","Changing the system prompt language","Using emoji instead of words"], a:1, s:4},
+  {t:"tf", q:"An LLM trained primarily on English data may perform worse on Arabic tasks due to data imbalance.", a:"True", s:4},
+  {t:"mc", q:"When evaluating a bilingual (Arabic/English) response, the evaluator should check:", opts:["Only the English portions","Only the Arabic portions","Both language portions for accuracy, fluency, and appropriateness","Only spelling"], a:2, s:4},
+  {t:"tf", q:"Proper names (like cities or people's names) should typically be transliterated consistently in Arabic LLM responses.", a:"True", s:4},
+  {t:"mc", q:"A user asks for advice on a culturally sensitive topic in Arabic. A high-quality response would:", opts:["Ignore the cultural context","Acknowledge cultural nuances and respond appropriately","Respond only in English","Refuse to engage"], a:1, s:4},
+  {t:"tf", q:"Dialect differences between Gulf Arabic and Egyptian Arabic are irrelevant to output quality evaluation.", a:"False", s:4},
+  {t:"mc", q:"Which of the following is a sign of poor Arabic fluency in an LLM response?", opts:["Correct dual verb conjugation","Using masculine plural forms where feminine forms are grammatically required","Appropriate use of فصحى","Correct placement of adjectives after nouns"], a:1, s:4},
+
+  // ── SECTION 6: Advanced Reasoning & Edge Cases (Q101–122) ────────────────
+  {t:"mc", q:"A user asks: 'What is heavier, a kilogram of feathers or a kilogram of gold?' A correct LLM response would say:", opts:["Gold, because it's denser","Feathers, because there are more of them","They weigh the same — both are one kilogram","It depends on altitude"], a:2, s:5},
+  {t:"tf", q:"An LLM response that sounds confident is necessarily more accurate than one that expresses uncertainty.", a:"False", s:5},
+  {t:"mc", q:"What is 'chain-of-thought' prompting?", opts:["Prompting the model to answer in bullet points","Encouraging the model to show its reasoning steps before giving a final answer","Using multiple prompts in sequence","Chaining multiple API calls"], a:1, s:5},
+  {t:"mc", q:"When a model says 'As an AI, I cannot have opinions' but then expresses a clear opinion, this is an example of:", opts:["Good transparency","Inconsistency in the response","Instruction following","Hallucination"], a:1, s:5},
+  {t:"tf", q:"A model that hedges excessively ('I think maybe possibly...') on simple factual questions is demonstrating good calibration.", a:"False", s:5},
+  {t:"mc", q:"What is the difference between a 'factual error' and a 'reasoning error' in an LLM response?", opts:["There is no difference","A factual error is wrong information; a reasoning error is flawed logic even if facts are correct","A reasoning error is always more serious","Factual errors only occur in math"], a:1, s:5},
+  {t:"mc", q:"A user asks a model to 'write a poem, then summarize it.' The model writes the poem but skips the summary. This is:", opts:["Acceptable if the poem is good","An instruction-following failure","A hallucination","A safety violation"], a:1, s:5},
+  {t:"tf", q:"Models can make mathematical errors even on simple arithmetic if not prompted to show their work.", a:"True", s:5},
+  {t:"mc", q:"Which of the following prompts is most likely to produce a well-structured, complete response?", opts:["'Tell me about climate.'","'In 3 paragraphs, explain the main causes, effects, and solutions for climate change.'","'Climate?'","'Say something about the weather.'"], a:1, s:5},
+  {t:"mc", q:"What should an evaluator do if a model response contains a URL that may be fabricated?", opts:["Click the link to verify","Rate the response lower and flag the hallucinated link","Ignore it and rate on other criteria","Rate it higher for being helpful"], a:1, s:5},
+  {t:"tf", q:"An LLM response that is correct for the question asked but uses an inappropriate tone for the context should be noted in evaluation.", a:"True", s:5},
+  {t:"mc", q:"A model is asked 'Who won the 2022 FIFA World Cup?' and answers 'Brazil.' This is:", opts:["Correct","Incorrect — Argentina won","Incomplete","Off-topic"], a:1, s:5},
+  {t:"mc", q:"What is 'output formatting' as an evaluation criterion?", opts:["Whether the model uses proper fonts","Whether the response format (lists, paragraphs, code blocks, etc.) matches what was requested","Whether the response is long enough","Whether the model avoids passive voice"], a:1, s:5},
+  {t:"tf", q:"When a prompt has multiple sub-questions, a high-quality response should address all of them.", a:"True", s:5},
+  {t:"mc", q:"A model is asked to write code in Python but returns JavaScript. This is a failure of:", opts:["Safety","Hallucination","Instruction following","Fluency"], a:2, s:5},
+  {t:"mc", q:"Which of the following best describes 'model uncertainty'?", opts:["The model is broken","The model appropriately signals when it is not confident in its answer","The model is offline","The model has too many parameters"], a:1, s:5},
+  {t:"tf", q:"Evaluators should penalize a model for appropriately saying 'I don't know' when it genuinely doesn't have enough information.", a:"False", s:5},
+  {t:"mc", q:"A prompt asks for a 'professional email tone.' The model responds with slang and emojis. This is a failure of:", opts:["Factual accuracy","Tone/register instruction following","Completeness","Safety"], a:1, s:5},
+  {t:"mc", q:"What is the best way to handle a question where you, as an evaluator, are not sure about the correct answer?", opts:["Guess based on the model's confidence","Consult the guidelines, use available resources, and flag if still uncertain","Always mark it as incorrect","Skip all uncertain items"], a:1, s:5},
+  {t:"tf", q:"Consistency in evaluation means applying the same criteria to all responses, regardless of topic, length, or language.", a:"True", s:5},
+  {t:"mc", q:"Which of the following is the MOST important quality for an LLM data annotator?", opts:["Typing speed","Attention to detail and consistent application of guidelines","Familiarity with programming","Having a degree in computer science"], a:1, s:5},
+  {t:"mc", q:"As a final question: If you had to choose ONE word to describe what makes a great LLM response, which would it be?", opts:["Long","Helpful","Formal","Complex"], a:1, s:5}
+];
+
+// Shuffle helper
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Shuffle within each section to keep sections intact but randomize question order
+function buildShuffledQuestions() {
+  let result = [];
+  SECTIONS.forEach(sec => {
+    const sectionQs = QUESTIONS_MASTER.slice(sec.start, sec.end + 1);
+    result = result.concat(shuffle(sectionQs));
+  });
+  return result;
+}
+
+let QUESTIONS = [...QUESTIONS_MASTER];
 let currentQ = 0;
 let answers = new Array(QUESTIONS.length).fill(null);
+let confidence = new Array(QUESTIONS.length).fill(null); // 'sure','unsure','guessing'
 let flagged = new Array(QUESTIONS.length).fill(false);
 let timerInterval = null;
 let secondsLeft = 122 * 60;
 let startTime = null;
 let examEnded = false;
+let reviewData = [];
+let currentFilter = 'all';
+
+// LocalStorage for best score
+function getBestScore() {
+  try { return JSON.parse(localStorage.getItem('llm_best')) || null; } catch { return null; }
+}
+function saveBestScore(pct, correct) {
+  try { localStorage.setItem('llm_best', JSON.stringify({ pct, correct })); } catch {}
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Show best score on start screen
+(function initStart() {
+  const best = getBestScore();
+  if (best) {
+    document.getElementById('best-score-banner').style.display = 'flex';
+    document.getElementById('best-score-val').textContent = best.pct + '% (' + best.correct + '/122)';
+  }
+})();
 
 function startExam() {
+  QUESTIONS = buildShuffledQuestions();
+  answers = new Array(QUESTIONS.length).fill(null);
+  confidence = new Array(QUESTIONS.length).fill(null);
+  flagged = new Array(QUESTIONS.length).fill(false);
+  currentQ = 0;
+  secondsLeft = 122 * 60;
+  examEnded = false;
+
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('exam-screen').style.display = 'block';
   startTime = Date.now();
@@ -436,12 +648,23 @@ function buildGrid() {
 
 function updateGrid() {
   const dots = document.querySelectorAll('.q-dot');
+  const answered = answers.filter(a => a !== null).length;
   dots.forEach((d, i) => {
     d.className = 'q-dot';
     if (flagged[i]) d.classList.add('flagged');
     else if (answers[i] !== null) d.classList.add('answered');
     if (i === currentQ) d.classList.add('current');
   });
+  // Update progress bar
+  const pct = (answered / QUESTIONS.length) * 100;
+  document.getElementById('progress-bar-fill').style.width = pct + '%';
+  document.getElementById('progress-answered').textContent = answered + ' answered';
+  document.getElementById('progress-remaining').textContent = (QUESTIONS.length - answered) + ' remaining';
+}
+
+function getSectionName(q) {
+  const si = q.s;
+  return SECTIONS[si] ? SECTIONS[si].name : '';
 }
 
 function renderQuestion() {
@@ -475,13 +698,27 @@ function renderQuestion() {
     optionsHTML = `<textarea class="option-text-input" placeholder="Type your answer here..." oninput="saveAnswerText(this.value)">${val}</textarea>`;
   }
 
+  // Confidence buttons
+  const conf = confidence[currentQ];
+  const confHTML = `
+    <div class="confidence-wrap">
+      <div class="confidence-label">How confident are you?</div>
+      <div class="confidence-btns">
+        <button class="conf-btn ${conf === 'sure' ? 'active-sure' : ''}" onclick="setConfidence('sure')">✅ Sure</button>
+        <button class="conf-btn ${conf === 'unsure' ? 'active-unsure' : ''}" onclick="setConfidence('unsure')">🤔 Unsure</button>
+        <button class="conf-btn ${conf === 'guessing' ? 'active-guessing' : ''}" onclick="setConfidence('guessing')">🎲 Guessing</button>
+      </div>
+    </div>`;
+
   card.innerHTML = `
     <div class="q-header">
       <span class="q-num">Q${currentQ + 1}</span>
       <span class="q-type-badge">${typeLabel}</span>
+      <span class="q-section-badge">${getSectionName(q)}</span>
     </div>
     <div class="q-text">${q.q}</div>
     ${optionsHTML}
+    ${confHTML}
   `;
 
   const flagBtn = document.getElementById('flag-btn');
@@ -504,6 +741,10 @@ function saveAnswerTF(v) {
 }
 function saveAnswerText(v) {
   answers[currentQ] = v.trim() || null;
+}
+function setConfidence(val) {
+  confidence[currentQ] = confidence[currentQ] === val ? null : val;
+  renderQuestion();
 }
 
 function navigate(dir) {
@@ -534,19 +775,40 @@ function submitExam(auto) {
   const timeUsed = Math.round((Date.now() - startTime) / 1000);
   let correct = 0, wrong = 0, skipped = 0;
 
+  reviewData = [];
   QUESTIONS.forEach((q, i) => {
     const a = answers[i];
-    if (a === null) { skipped++; return; }
+    let status = 'skipped';
+    let yourAns = 'Skipped';
+    let correctAns = '';
     let isCorrect = false;
-    if (q.t === 'mc') isCorrect = a === q.a;
-    else if (q.t === 'tf') isCorrect = a === q.a;
-    else isCorrect = true; // free text — marked as attempted
-    if (isCorrect) correct++; else wrong++;
+
+    if (q.t === 'mc') {
+      correctAns = q.opts[q.a];
+      if (a !== null) { yourAns = q.opts[a]; isCorrect = a === q.a; status = isCorrect ? 'correct' : 'wrong'; }
+    } else if (q.t === 'tf') {
+      correctAns = q.a;
+      if (a !== null) { yourAns = a; isCorrect = a === q.a; status = isCorrect ? 'correct' : 'wrong'; }
+    } else {
+      correctAns = '(Open answer — marked as attempted)';
+      if (a !== null) { yourAns = a; isCorrect = true; status = 'correct'; }
+    }
+
+    if (status === 'correct') correct++;
+    else if (status === 'wrong') wrong++;
+    else skipped++;
+
+    reviewData.push({ q, i, status, yourAns, correctAns, isCorrect, conf: confidence[i] });
   });
 
   const pct = Math.round((correct / QUESTIONS.length) * 100);
   const timeMin = Math.floor(timeUsed / 60);
   const timeSec = timeUsed % 60;
+
+  // Best score
+  const prev = getBestScore();
+  const isNewBest = !prev || pct > prev.pct;
+  if (isNewBest) saveBestScore(pct, correct);
 
   document.getElementById('exam-screen').style.display = 'none';
   document.getElementById('result-screen').style.display = 'block';
@@ -557,38 +819,91 @@ function submitExam(auto) {
   document.getElementById('r-wrong').textContent = wrong;
   document.getElementById('r-skip').textContent = skipped;
   document.getElementById('r-time').textContent = timeMin + 'm ' + timeSec + 's';
+  document.getElementById('r-best').textContent = (isNewBest ? pct : (prev ? prev.pct : pct)) + '%';
+
+  if (isNewBest && prev) {
+    document.getElementById('new-best-badge').style.display = 'inline-block';
+  }
 
   const circle = document.querySelector('.score-circle');
   circle.style.borderColor = pct >= 70 ? '#16a34a' : pct >= 50 ? '#f59e0b' : '#dc2626';
   document.getElementById('score-pct').style.color = pct >= 70 ? '#16a34a' : pct >= 50 ? '#f59e0b' : '#dc2626';
 
-  buildReview();
+  buildBreakdown(correct);
+  buildConfidenceBreakdown();
+  buildReview('all');
 }
 
-function buildReview() {
+function buildBreakdown() {
+  const grid = document.getElementById('breakdown-grid');
+  grid.innerHTML = '';
+  SECTIONS.forEach((sec, si) => {
+    const secQs = reviewData.filter(r => r.q.s === si);
+    const secCorrect = secQs.filter(r => r.status === 'correct').length;
+    const secTotal = secQs.length;
+    const secPct = secTotal ? Math.round((secCorrect / secTotal) * 100) : 0;
+    const color = secPct >= 70 ? '#16a34a' : secPct >= 50 ? '#f59e0b' : '#dc2626';
+
+    const card = document.createElement('div');
+    card.className = 'breakdown-card';
+    card.style.borderLeftColor = color;
+    card.innerHTML = `
+      <div class="bc-name">${sec.name}</div>
+      <div class="bc-score" style="color:${color}">${secPct}% <span style="font-size:14px;color:#888;font-weight:400">(${secCorrect}/${secTotal})</span></div>
+      <div class="bc-bar-track"><div class="bc-bar-fill" style="width:${secPct}%;background:${color}"></div></div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buildConfidenceBreakdown() {
+  const container = document.getElementById('conf-stats');
+  container.innerHTML = '';
+  const levels = [
+    { key: 'sure', label: '✅ Sure', color: '#16a34a' },
+    { key: 'unsure', label: '🤔 Unsure', color: '#f59e0b' },
+    { key: 'guessing', label: '🎲 Guessing', color: '#dc2626' },
+    { key: null, label: '— Not rated', color: '#888' }
+  ];
+  levels.forEach(({ key, label, color }) => {
+    const group = reviewData.filter(r => r.conf === key);
+    if (group.length === 0) return;
+    const groupCorrect = group.filter(r => r.status === 'correct').length;
+    const pct = Math.round((groupCorrect / group.length) * 100);
+    const el = document.createElement('div');
+    el.className = 'conf-stat';
+    el.innerHTML = `
+      <div class="cs-label">${label}</div>
+      <div class="cs-val" style="color:${color}">${pct}% correct</div>
+      <div class="cs-sub">${groupCorrect}/${group.length} questions</div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+function filterReview(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildReview(filter);
+}
+
+function buildReview(filter) {
   const list = document.getElementById('review-list');
   list.innerHTML = '';
-  QUESTIONS.forEach((q, i) => {
-    const a = answers[i];
-    let status = 'skipped';
-    let yourAns = 'Skipped';
-    let correctAns = '';
+  const filtered = filter === 'all' ? reviewData : reviewData.filter(r => r.status === filter);
 
-    if (q.t === 'mc') {
-      correctAns = q.opts[q.a];
-      if (a !== null) { yourAns = q.opts[a]; status = a === q.a ? 'correct' : 'wrong'; }
-    } else if (q.t === 'tf') {
-      correctAns = q.a;
-      if (a !== null) { yourAns = a; status = a === q.a ? 'correct' : 'wrong'; }
-    } else {
-      correctAns = '(Open answer — marked as attempted)';
-      if (a !== null) { yourAns = a; status = 'correct'; }
-    }
+  if (filtered.length === 0) {
+    list.innerHTML = '<p style="color:#888;text-align:center;padding:2rem">No questions in this category.</p>';
+    return;
+  }
 
+  filtered.forEach(({ q, i, status, yourAns, correctAns, conf }) => {
+    const confLabel = conf ? { sure: '✅ Sure', unsure: '🤔 Unsure', guessing: '🎲 Guessing' }[conf] : '';
     const div = document.createElement('div');
     div.className = 'review-q ' + status;
     div.innerHTML = `
-      <div class="rq-num">Q${i+1} — ${status === 'correct' ? '✅ Correct' : status === 'wrong' ? '❌ Wrong' : '⬜ Skipped'}</div>
+      <div class="rq-num">Q${i+1} — ${status === 'correct' ? '✅ Correct' : status === 'wrong' ? '❌ Wrong' : '⬜ Skipped'}${confLabel ? ' &nbsp;·&nbsp; ' + confLabel : ''}</div>
       <div class="rq-text">${q.q}</div>
       <div class="rq-answer">
         <span class="your-ans">Your answer: ${yourAns}</span>
@@ -599,13 +914,44 @@ function buildReview() {
   });
 }
 
+function copyResults() {
+  const pct = document.getElementById('score-pct').textContent;
+  const raw = document.getElementById('score-raw').textContent;
+  const time = document.getElementById('r-time').textContent;
+  const correct = document.getElementById('r-correct').textContent;
+  const wrong = document.getElementById('r-wrong').textContent;
+
+  // Build section breakdown text
+  let sections = '';
+  SECTIONS.forEach((sec, si) => {
+    const secQs = reviewData.filter(r => r.q.s === si);
+    const secCorrect = secQs.filter(r => r.status === 'correct').length;
+    const secPct = secQs.length ? Math.round((secCorrect / secQs.length) * 100) : 0;
+    sections += `  • ${sec.name}: ${secPct}% (${secCorrect}/${secQs.length})\n`;
+  });
+
+  const text = `📝 LLM Assessment Simulator Results
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Score: ${pct} (${raw})
+✅ Correct: ${correct} | ❌ Wrong: ${wrong}
+⏱ Time used: ${time}
+
+📊 Section Breakdown:
+${sections}
+Built by Batoul | https://batoul2020.github.io/LLM-Assessment-Simulator/`;
+
+  navigator.clipboard.writeText(text).then(() => showToast('Results copied! Ready to paste on LinkedIn.')).catch(() => showToast('Copy failed — try manually selecting the text.'));
+}
+
 function restartExam() {
-  currentQ = 0;
-  answers = new Array(QUESTIONS.length).fill(null);
-  flagged = new Array(QUESTIONS.length).fill(false);
-  secondsLeft = 122 * 60;
-  examEnded = false;
   document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('new-best-badge').style.display = 'none';
+  // Update best score banner on start screen
+  const best = getBestScore();
+  if (best) {
+    document.getElementById('best-score-banner').style.display = 'flex';
+    document.getElementById('best-score-val').textContent = best.pct + '% (' + best.correct + '/122)';
+  }
   document.getElementById('start-screen').style.display = 'flex';
 }
 </script>
